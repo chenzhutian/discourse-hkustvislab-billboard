@@ -37,7 +37,7 @@ after_initialize do
 
   Thread.new do
     loop do 
-      sleep 10
+      sleep 60
       user = User.where(username: 'zhutian.chen').first
       guardian = Guardian.new(user)
       summary = UserSummary.new(user, guardian)
