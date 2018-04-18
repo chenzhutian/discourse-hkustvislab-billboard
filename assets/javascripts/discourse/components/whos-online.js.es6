@@ -5,7 +5,7 @@ export default Ember.Component.extend({
   showBillBoard: function () {
     return this.get('online').get('shouldDisplay');
   }.property(),
-  online: inject.service('online-service'),
+  online: inject.service('billboard-service'),
   targetUser: function () {
     return this.get('online').targetUser;
   }.property(),
