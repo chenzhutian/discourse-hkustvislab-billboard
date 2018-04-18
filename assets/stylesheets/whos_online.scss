@@ -1,0 +1,18 @@
+#whos-online {
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+
+        td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        td:first-child {
+            font-weight: 700;
+        }
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    }
+}
