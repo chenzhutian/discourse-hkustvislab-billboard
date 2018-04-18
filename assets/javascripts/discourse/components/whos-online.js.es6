@@ -6,7 +6,7 @@ export default Ember.Component.extend({
     return this.get('online').get('shouldDisplay');
   }.property(),
   online: inject.service('online-service'),
-  targetUser: function() {
+  targetUser: function () {
     return this.get('online').targetUser;
   }.property(),
   user: function () {
@@ -35,10 +35,16 @@ export default Ember.Component.extend({
     if (userSummary && targetUserSummary) {
       return Object.keys(this.get('summaryTableHeadsMap'))
         .map(key => {
+          let targetValue = targetUserSummary[key];
+          let value = userSummary[key];
+          if (key === 'time_read') {
+            targetValue = new Date(targetValue * 1000).toISOString().substr(11, 8);
+            value = new Date(value * 1000).toISOString().substr(11, 8);
+          }
           return {
             key: headMap[key],
-            targetValue: targetUserSummary[key],
-            value: userSummary[key]
+            targetValue,
+            value
           };
         })
     }

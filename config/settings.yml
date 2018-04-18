@@ -6,3 +6,6 @@ plugins:
     default: 0
     enum: 'TrustLevelSetting'
     client: true
+  billboard_target_user:
+    default: 'siwei'
+    client: true

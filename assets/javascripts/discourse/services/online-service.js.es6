@@ -16,76 +16,30 @@ export default Ember.Service.extend({
     init() {
         // If user not allowed, don't display
         if (!this.get('shouldDisplay')) return;
-        var { user: targetUser } = Discourse.Site.currentProp('billboard_target_user');
+        var { user: targetUser, userSummary: targetUserSummary } = Discourse.Site.currentProp('billboard_target_user');
         this.set('targetUser', targetUser);
+        this.set('targetUserSummary', targetUserSummary.user_summary);
 
         const user = Discourse.User.current();
-        const lowerUsername = user.username.toLocaleLowerCase();
         this.set('user', user);
-        ajax(userPath(`${lowerUsername}/summary.json`))
+        ajax(userPath(`${user.username.toLocaleLowerCase()}/summary.json`))
             .then(json => {
                 const summary = json.user_summary;
-                // const topicMap = {};
-                // const badgeMap = {};
-
-                // json.topics.forEach(t => topicMap[t.id] = store.createRecord('topic', t));
-                // Badge.createFromJson(json).forEach(b => badgeMap[b.id] = b);
-
-                // summary.topics = summary.topic_ids.map(id => topicMap[id]);
-
-                // summary.replies.forEach(r => {
-                //     r.topic = topicMap[r.topic_id];
-                //     r.url = r.topic.urlForPostNumber(r.post_number);
-                //     r.createdAt = new Date(r.created_at);
-                // });
-
-                // summary.links.forEach(l => {
-                //     l.topic = topicMap[l.topic_id];
-                //     l.post_url = l.topic.urlForPostNumber(l.post_number);
-                // });
-
-                // if (summary.badges) {
-                //     summary.badges = summary.badges.map(ub => {
-                //         const badge = badgeMap[ub.badge_id];
-                //         badge.count = ub.count;
-                //         return badge;
-                //     });
-                // }
                 this.set('userSummary', summary);
-                console.debug('summary', summary);
             });
-        ajax(userPath(`${targetUser.username.toLocaleLowerCase()}/summary.json`))
-            .then(json => {
-                const summary = json.user_summary;
-                // const topicMap = {};
-                // const badgeMap = {};
 
-                // json.topics.forEach(t => topicMap[t.id] = store.createRecord('topic', t));
-                // Badge.createFromJson(json).forEach(b => badgeMap[b.id] = b);
+        setInterval(() => {
+            ajax(userPath(`${user.username.toLocaleLowerCase()}/summary.json`))
+                .then(json => {
+                    const summary = json.user_summary;
+                    this.set('userSummary', summary);
+                });
+        }, 60000);
 
-                // summary.topics = summary.topic_ids.map(id => topicMap[id]);
-
-                // summary.replies.forEach(r => {
-                //     r.topic = topicMap[r.topic_id];
-                //     r.url = r.topic.urlForPostNumber(r.post_number);
-                //     r.createdAt = new Date(r.created_at);
-                // });
-
-                // summary.links.forEach(l => {
-                //     l.topic = topicMap[l.topic_id];
-                //     l.post_url = l.topic.urlForPostNumber(l.post_number);
-                // });
-
-                // if (summary.badges) {
-                //     summary.badges = summary.badges.map(ub => {
-                //         const badge = badgeMap[ub.badge_id];
-                //         badge.count = ub.count;
-                //         return badge;
-                //     });
-                // }
-                this.set('targetUserSummary', summary);
-                console.debug('targetUserSummary', summary);
-            });
+        this.messageBus.subscribe('/billboard_targetUser', (data, global_id, message_id) => {
+            console.debug('messages', data);
+            this.set('targetUserSummary', data.user_summary);
+        });
     },
 
     shouldDisplay: function () {

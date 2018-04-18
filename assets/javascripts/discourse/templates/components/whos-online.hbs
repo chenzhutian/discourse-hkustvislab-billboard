@@ -1,8 +1,9 @@
 {{#if showBillBoard }}
-<div id="whos-online">
+<div id="billboard">
+	<h3>The one with most publications vs You</h3>
 	<table>
 		<tr>
-			<td></td>
+			<td>{{targetUser.username}} vs You</td>
 			<td>{{whos-online-avatar user=targetUser}}</td>
 			<td>{{whos-online-avatar user=user}}</td>
 		</tr>
