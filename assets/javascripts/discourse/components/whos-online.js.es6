@@ -2,25 +2,16 @@ import Ember from 'ember';
 var inject = Ember.inject;
 
 export default Ember.Component.extend({
-  showWhosOnline: function () {
-    // If the number of users is less than the minimum, and it's set to hide, hide it
-    if (this.get('online').users.length < this.siteSettings.whos_online_minimum_display &&
-      this.siteSettings.whos_online_hide_below_minimum_display) {
-      return false;
-    }
-
+  showBillBoard: function () {
     return this.get('online').get('shouldDisplay');
   }.property(),
   online: inject.service('online-service'),
+  targetUser: function() {
+    return this.get('online').targetUser;
+  }.property(),
   user: function () {
     return this.get('online').user;
-  }.property('online.users.@each'),
-  isLong: function () {
-    return this.get('online').users.length >= this.siteSettings.whos_online_collapse_threshold;
-  }.property('online.users.length'),
-  isUsers: function () {
-    return this.get('online').users.length >= this.siteSettings.whos_online_minimum_display;
-  }.property('online.users.length'),
+  }.property(),
   summaryTableHeadsMap: {
     'likes_given': 'Likes Given',
     'likes_received': 'Likes Received',
@@ -38,13 +29,17 @@ export default Ember.Component.extend({
     // 'most_replied_to_users': 'Most Replied to Users',
     // 'badges': 'Badges'
   },
-  summaryTableRows: Ember.computed('online.user_summary', function () {
-    const { user_summary } = this.get('online');
+  summaryTableRows: Ember.computed('online.userSummary', 'online.targetUserSummary', function () {
+    const { userSummary, targetUserSummary } = this.get('online');
     const headMap = this.get('summaryTableHeadsMap');
-    if (user_summary) {
+    if (userSummary && targetUserSummary) {
       return Object.keys(this.get('summaryTableHeadsMap'))
         .map(key => {
-          return { key: headMap[key], value: user_summary[key] };
+          return {
+            key: headMap[key],
+            targetValue: targetUserSummary[key],
+            value: userSummary[key]
+          };
         })
     }
   })

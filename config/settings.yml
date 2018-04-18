@@ -2,37 +2,7 @@ plugins:
   billboard_enabled:
     default: true
     client: true
-  whos_online_active_timeago:
-    default: 5
-    client: true
-  whos_online_collapse_threshold:
-    default: 10
-    client: true
-  whos_online_maximum_display:
-    default: 50
-    client: true
-  whos_online_minimum_display:
-    default: 1
-    client: true
-  whos_online_hide_below_minimum_display:
-    default: false
-    client: true
-  whos_online_display_public:
-    default: false
-    client: true
-  whos_online_display_min_trust_level:
+  billboard_display_min_trust_level:
     default: 0
     enum: 'TrustLevelSetting'
-    client: true
-  whos_online_avatar_indicator:
-    default: 'ring'
-    type: enum
-    client: true
-    choices:
-      - ring
-      - glow
-      - flair
-      - none
-  whos_online_avatar_indicator_topic_lists:
-    default: false
     client: true
