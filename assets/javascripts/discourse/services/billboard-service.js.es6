@@ -38,7 +38,9 @@ export default Ember.Service.extend({
 
         this.messageBus.subscribe('/billboard_targetUser', (data, global_id, message_id) => {
             console.debug('messages', data);
-            this.set('targetUserSummary', data.user_summary);
+            if (data.user_summary) {
+                this.set('targetUserSummary', data.user_summary);
+            }
         });
     },
 
