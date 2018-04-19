@@ -1,9 +1,11 @@
 {{#if showBillBoard }}
-<div id="billboard">
+<div id="billboard" class="{{if isCollapsed 'billboard-collapsed'}}">
 	<table>
-		<tr><td colspan="3">The one with most publications vs You</td></tr>
 		<tr>
-			<td>{{targetUser.username}} vs You</td>
+			<td colspan="3">The one with most publications vs You</td>
+		</tr>
+		<tr>
+			<td></td>
 			<td>{{whos-online-avatar user=targetUser}}</td>
 			<td>{{whos-online-avatar user=user}}</td>
 		</tr>
@@ -15,5 +17,9 @@
 		</tr>
 		{{/each}}
 	</table>
+	<div class="billboard-trigger" onclick={{action 'triggerCollapse'}}>
+		Billboard
+		<i class="fa fa-arrow-left" class="{{if isCollapsed 'billboard-collapsed'}}"></i>
+	</div>
 </div>
 {{/if}}

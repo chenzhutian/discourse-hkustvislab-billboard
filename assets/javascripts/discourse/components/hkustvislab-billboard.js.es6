@@ -2,6 +2,12 @@ import Ember from 'ember';
 var inject = Ember.inject;
 
 export default Ember.Component.extend({
+  actions: {
+    triggerCollapse: function (e) {
+      this.set('isCollapsed', !this.get('isCollapsed'));
+    }
+  },
+
   showBillBoard: function () {
     return this.get('online').get('shouldDisplay');
   }.property(),
@@ -12,6 +18,7 @@ export default Ember.Component.extend({
   user: function () {
     return this.get('online').user;
   }.property(),
+  isCollapsed: false,
   summaryTableHeadsMap: {
     'likes_given': 'Likes Given',
     'likes_received': 'Likes Received',

@@ -1,10 +1,16 @@
 #billboard {
-    position: absolute;
+    position: fixed;
     left: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: flex-start;
+    transition: all ease-in-out 1s;
+    top: 30%;
     table {
         font-family: arial, sans-serif;
         border-collapse: collapse;
-
+        background: #fff;
+        box-shadow: 4px 4px 4px 1px rgba(222, 219, 222, 0.66);
         td {
             border: 1px solid #dddddd;
             text-align: left;
@@ -17,4 +23,20 @@
             background-color: #dddddd;
         }
     }
+    .billboard-trigger {
+        cursor: pointer;
+        writing-mode: tb-rl;
+        background-color: #d1f0ff;
+        padding: 4px 2px;
+        i {
+            transition: all ease-in-out 1s;
+        }
+        i.billboard-collapsed {
+            transform: rotate(180deg);
+        }
+    }
+}
+
+.billboard-collapsed {
+    transform: translateX(-92%);
 }
