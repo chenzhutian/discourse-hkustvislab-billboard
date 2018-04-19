@@ -1,6 +1,6 @@
 # name: discourse-hkustvislab-billboard
 # about: The billboard of HKUST-VisLab
-# version: 0.1
+# version: 0.5
 # authors: Zhutian Chen
 # url: https://github.com/chenzhutian/discourse-hkustvislab-billboard
 
@@ -35,31 +35,36 @@ after_initialize do
       messagebus_id: MessageBus.last_id('/billboard') }
   end
 
-  Thread.new do
-    loop do 
-      sleep 60
-      user = User.where(username: 'zhutian.chen').first
-      guardian = Guardian.new(user)
-      summary = UserSummary.new(user, guardian)
+  # Thread.new do
+  #   loop do 
+  #     sleep 60
+  #     user = User.where(username: 'zhutian.chen').first
+  #     guardian = Guardian.new(user)
+  #     summary = UserSummary.new(user, guardian)
         
-      MessageBus.publish('/billboard_targetUser', UserSummarySerializer.new(summary, scope: guardian).as_json)
-    end
-  end
+  #     MessageBus.publish('/billboard_targetUser', UserSummarySerializer.new(summary, scope: guardian).as_json)
+  #   end
+  # end
 
   module ::Jobs
 
     # This clears up users who have now moved offline
-    class BillBoard < ::Jobs::Scheduled
+    class BillBoardTargetUserInfo < ::Jobs::Scheduled
       every 1.minutes
 
       def execute(args)
-        # return if !SiteSetting.billboard_enabled?
+        return if !SiteSetting.billboard_enabled?
 
-        # user = User.where(username: 'zhutian.chen').first
-        # guardian = Guardian.new(user)
-        # summary = UserSummary.new(user, guardian)
-        #UserSummarySerializer.new(summary, scope: guardian)
-        MessageBus.publish('/billboard_targetUser', {data:'aaa'}.as_json)
+        user = User.where(username: SiteSetting.billboard_target_user).first
+        userSummary = { user_summary: nil }.as_json
+    
+        if !user.nil?
+          guardian = Guardian.new(user)
+          summary = UserSummary.new(user, guardian)
+          userSummary = UserSummarySerializer.new(summary, scope: guardian)
+        end
+
+        MessageBus.publish('/billboard_targetUser', userSummary)
       end
     end
   end
