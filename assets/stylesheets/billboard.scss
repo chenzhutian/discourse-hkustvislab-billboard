@@ -11,22 +11,24 @@
         border-collapse: collapse;
         background: #fff;
         box-shadow: 4px 4px 4px 1px rgba(222, 219, 222, 0.66);
+        border: 1.8px solid #0abde3;
         td {
-            border: 1px solid #dddddd;
+            border: 1px solid #576574;
             text-align: left;
             padding: 8px;
         }
         td:first-child {
             font-weight: 700;
         }
-        tr:nth-child(even) {
-            background-color: #dddddd;
+        tr:nth-child(odd) {
+            background-color: #ecf0f1;
+            //color: #fff;
         }
     }
     .billboard-trigger {
         cursor: pointer;
         writing-mode: tb-rl;
-        background-color: #d1f0ff;
+        background-color: #0abde3;
         padding: 4px 2px;
         i {
             transition: all ease-in-out 1s;
