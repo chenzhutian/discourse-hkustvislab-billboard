@@ -18,7 +18,7 @@ export default Ember.Component.extend({
   user: function () {
     return this.get('online').user;
   }.property(),
-  isCollapsed: false,
+  isCollapsed: true,
   summaryTableHeadsMap: {
     'likes_given': 'Likes Given',
     'likes_received': 'Likes Received',
